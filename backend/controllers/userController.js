@@ -1,6 +1,8 @@
-import { User } from "../models/userModel";
+import { User } from "../models/userModel.js";
 
-import { generateTokens } from "../utils/generateToken";
+import {apiError} from "../utils/apiError.js"
+import {apiResponse} from "../utils/apiResponse.js"
+import {generateTokens} from "../utils/generateToken.js"
 
 
 const registerUser = async (req, res,next) => {
