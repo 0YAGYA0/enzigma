@@ -8,6 +8,7 @@ import Temp from "./pages/Temp";
 import ApplicationCard from "./components/ApplicationCard";
 import TokenGenerator from "./components/TokenGenerator";
 import TokenLogin from "./components/TokenLogin";
+import OnboardingCard from "./components/OnboardingCard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/apply" element={<ApplicationCard />} />
         <Route path="/token" element={<TokenLogin />} />
         <Route path="/hr" element={<TokenGenerator />} />
+        <Route path="/onb" element={<OnboardingCard />} />
       </Routes>
     </div>
   );

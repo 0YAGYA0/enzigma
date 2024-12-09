@@ -81,9 +81,9 @@ const Temp = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto ">
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="min-h-screen bg-gray-100 p-8">
+        <div className="min-h-screen bg-gradient-to-b bg-gray-100 p-8 from-blue-50 to-blue-100">
           <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg">
             <div className="p-6">
               <h1 className="text-2xl font-bold text-center mb-8 text-gray-800">

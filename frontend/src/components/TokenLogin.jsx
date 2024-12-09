@@ -1,24 +1,52 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { TextField, IconButton } from "@mui/material";
 
 const TokenLogin = () => {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(["", "", "", "", ""]);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  function handleClick() {
+    navigate("/");
+  }
+  function handlelogin() {
+    navigate("/temp");
+  }
+
+  // Handle input changes
+  const handleInputChange = (index, value) => {
+    if (isNaN(value)) return; // Allow only numbers
+    const newToken = [...token];
+    newToken[index] = value;
+    setToken(newToken);
+
+    if (value !== "" && index < 4) {
+      document.getElementById(`input-${index + 1}`).focus();
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const fullToken = token.join("");
+
+    // Simulate token verification
     try {
       const response = await fetch("/api/token-login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token: fullToken }),
       });
+
       const data = await response.json();
+
       if (data.success) {
-        navigate("/onboarding"); // Redirect to onboarding form
+        navigate("/temp");
       } else {
-        alert("Invalid or expired token");
+        alert("Invalid or expired token. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -26,22 +54,66 @@ const TokenLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4">Token Login</h2>
-        <input
-          type="text"
-          placeholder="Enter your token"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          className="w-full mb-4 px-4 py-2 border border-gray-300 rounded-md"
-        />
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          Login with Token
-        </button>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex justify-center items-center">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <IconButton
+            className="bg-white hover:bg-gray-100 "
+            onClick={handleClick}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <a href="/help" className="text-gray-600 hover:text-gray-900">
+            Need help?
+          </a>
+        </div>
+
+        <h1 className="text-3xl font-bold text-gray-800 text-center">
+          Token Login
+        </h1>
+        <p className="text-gray-600 text-center mt-2 mb-6">
+          Enter the 5-digit token you received to continue.
+        </p>
+
+        {/* Token Input Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex justify-center gap-4">
+            {token.map((value, index) => (
+              <input
+                key={index}
+                id={`input-${index}`}
+                type="text"
+                maxLength="1"
+                value={value}
+                onChange={(e) => handleInputChange(index, e.target.value)}
+                className="w-14 h-14 text-center text-2xl border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm"
+              />
+            ))}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            onClick={handlelogin}
+            className="w-full py-3 bg-blue-600 text-white font-semibold text-lg rounded-md hover:bg-blue-700 transition duration-300 shadow-md"
+          >
+            Verify Token
+          </button>
+        </form>
+
+        {/* Footer */}
+        <div className="mt-6 text-center">
+          <p className="text-gray-500">
+            Didn't receive a token?{" "}
+            <a
+              href="/help"
+              className="text-blue-500 hover:underline transition duration-300"
+            >
+              Contact Support
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
