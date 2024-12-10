@@ -122,7 +122,7 @@ const Home = () => {
           Welcome to Enzigma Onboarding Platform
         </h1>
         <p className="text-lg sm:text-xl md:text-2xl mb-10">
-          Streamline your onboarding process with our platform.
+          Streamline the onboarding process with Enzigma.
         </p>
 
         {/* Buttons */}
