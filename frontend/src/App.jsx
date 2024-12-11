@@ -10,6 +10,10 @@ import TokenGenerator from "./components/TokenGenerator";
 import TokenLogin from "./components/TokenLogin";
 import OnboardingCard from "./components/OnboardingCard";
 import ApplicationSubmitted from "./pages/ApplicationSubmitted";
+import UserDashboard from "./pages/UserDashboard";
+import Content from "./layouts/content";
+import AllApplications from "./pages/AllApplications";
+import UserDetail from "./pages/UserDetail";
 
 function App() {
   return (
@@ -25,6 +29,11 @@ function App() {
         <Route path="/hr" element={<TokenGenerator />} />
         <Route path="/onb" element={<OnboardingCard />} />
         <Route path="/confirm" element={<ApplicationSubmitted />} />
+        <Route path="/" element={<Content />}>
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/applications" element={<AllApplications />} />
+          <Route path="/users" element={<UserDetail />} />
+        </Route>
       </Routes>
     </div>
   );

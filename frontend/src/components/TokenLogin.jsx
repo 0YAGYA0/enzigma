@@ -11,7 +11,7 @@ const TokenLogin = () => {
     navigate("/");
   }
   function handlelogin() {
-    navigate("/temp");
+    navigate("/onb");
   }
 
   // Handle input changes
@@ -55,7 +55,7 @@ const TokenLogin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+      <div className="  rounded-lg p-8 w-full max-w-lg">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <IconButton
@@ -69,7 +69,7 @@ const TokenLogin = () => {
           </a>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-800 text-center">
+        <h1 className="text-3xl font-extrabold text-gray-800 text-center">
           Token Login
         </h1>
         <p className="text-gray-600 text-center mt-2 mb-6">
@@ -96,7 +96,7 @@ const TokenLogin = () => {
           <button
             type="submit"
             onClick={handlelogin}
-            className="w-full py-3 bg-blue-600 text-white font-semibold text-lg rounded-md hover:bg-blue-700 transition duration-300 shadow-md"
+            className="w-full py-3 bg-gray-900 text-white font-semibold text-lg rounded-md transition-transform transform hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-600 focus:ring-opacity-75"
           >
             Verify Token
           </button>

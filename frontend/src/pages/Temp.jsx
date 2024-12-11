@@ -567,7 +567,7 @@ const Temp = () => {
               <div className="mt-8 text-center">
                 <button
                   type="submit"
-                  className="py-2 px-6 bg-blue-500 text-white rounded-md"
+                  className="py-2 px-6 bg-gray-900 text-white rounded-md transition-transform transform hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-600 focus:ring-opacity-75"
                 >
                   Submit
                 </button>

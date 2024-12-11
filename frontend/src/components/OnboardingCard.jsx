@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiDocumentText, HiPencilAlt, HiHome } from "react-icons/hi";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { TextField, IconButton, Button } from "@mui/material";
 
 const OnboardingCard = () => {
   const [pdfFile, setPdfFile] = useState(null);
@@ -14,6 +16,10 @@ const OnboardingCard = () => {
     } else if (option === "manual") {
       navigate("/temp"); // Redirect to manual onboarding form
     }
+  };
+
+  const handleNavigateHome = () => {
+    navigate("/token");
   };
 
   // Handle file change (PDF upload)
@@ -32,13 +38,18 @@ const OnboardingCard = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-200 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-blue-50 to-blue-100 p-6">
+      <div className="  rounded-lg p-8 w-full max-w-lg">
         {/* Title */}
         <div className="flex justify-between items-center mb-6">
-          <button className="text-gray-500 hover:text-gray-700">← Back</button>
+          <IconButton
+            className="hover:bg-gray-100"
+            onClick={handleNavigateHome}
+          >
+            <ArrowBackIcon />
+          </IconButton>
         </div>
-        <h2 className="text-3xl font-semibold text-gray-800 text-center mb-4">
+        <h2 className="text-3xl font-extrabold text-gray-800 text-center mb-4">
           Let's Start Your Onboarding
         </h2>
 
