@@ -23,16 +23,17 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/detail" element={<Detail />} />
-        <Route path="/temp" element={<Temp />} />
         <Route path="/apply" element={<ApplicationCard />} />
         <Route path="/token" element={<TokenLogin />} />
-        <Route path="/hr" element={<TokenGenerator />} />
-        <Route path="/onb" element={<OnboardingCard />} />
+        <Route path="/temp" element={<Temp />} />
         <Route path="/confirm" element={<ApplicationSubmitted />} />
         <Route path="/" element={<Content />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/applications" element={<AllApplications />} />
           <Route path="/users" element={<UserDetail />} />
+          <Route path="/onb" element={<OnboardingCard />} />
+          <Route path="/onb/details" element={<Temp />} />
+          <Route path="/hr" element={<TokenGenerator />} />
         </Route>
       </Routes>
     </div>

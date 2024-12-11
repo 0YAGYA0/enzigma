@@ -1,8 +1,139 @@
 import React, { useState } from "react";
 import { FiSearch, FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const AllApplications = () => {
+  const navigate = useNavigate();
+
   const [users] = useState([
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
+      phone: "9089790890",
+      status: "Verified",
+    },
     {
       id: 1,
       name: "John Doe",
@@ -49,6 +180,10 @@ const AllApplications = () => {
     return matchesSearch && user.status === activeTab;
   });
 
+  const handleclick = (e) => {
+    navigate("/onb"); // Redirect to home page
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-8">
       {/* Heading */}
@@ -91,74 +226,68 @@ const AllApplications = () => {
       </div>
 
       {/* User Table */}
+      {/* User Table */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-indigo-50 border-b">
-              <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
-                Name
-              </th>
-              <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
-                Email
-              </th>
-              <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
-                Phone
-              </th>
-              <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
-                Status
-              </th>
-              <th className="px-6 py-3 text-gray-600 font-semibold text-sm text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user, index) => (
-              <tr
-                key={user.id}
-                className={`transition hover:shadow-md ${
-                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                }`}
-              >
-                <td className="px-6 py-4 text-gray-700 font-medium flex items-center space-x-3">
-                  <span>{user.name}</span>
-                </td>
-                <td className="px-6 py-4 text-gray-500">{user.email}</td>
-                {/* <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold 
-                    }`}
-                  >
-                    {user.phone}
-                  </span>
-                </td> */}
-
-                <td className="px-6 py-4 text-gray-500">{user.phone}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      user.status === "Verified"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {user.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <div className="flex justify-center space-x-4">
-                    <button className="text-indigo-500 hover:text-indigo-600 transition">
-                      <FiEdit className="text-xl" />
-                    </button>
-                    <button className="text-red-500 hover:text-red-600 transition">
-                      <FiTrash className="text-xl" />
-                    </button>
-                  </div>
-                </td>
+        <div className="overflow-y-auto" style={{ maxHeight: "600px" }}>
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-indigo-50 border-b">
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Phone
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm text-center">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user, index) => (
+                <tr
+                  key={user.id}
+                  className={`transition hover:shadow-md ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }`}
+                >
+                  <td className="px-6 py-4 text-gray-700 font-medium flex items-center space-x-3">
+                    <span>{user.name}</span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">{user.email}</td>
+                  <td className="px-6 py-4 text-gray-500">{user.phone}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        user.status === "Verified"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <div className="flex justify-center space-x-4">
+                      <button className="text-indigo-500 hover:text-indigo-600 transition">
+                        <FiEdit className="text-xl" />
+                      </button>
+                      <button className="text-red-500 hover:text-red-600 transition">
+                        <FiTrash className="text-xl" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {filteredUsers.length === 0 && (
           <div className="text-center text-gray-500 mt-6">No users found.</div>
@@ -166,7 +295,10 @@ const AllApplications = () => {
       </div>
 
       {/* Add Applicant Button */}
-      <button className="bg-indigo-600 text-white px-6 py-2 flex items-center space-x-2 rounded-lg hover:bg-indigo-700 transition mt-6">
+      <button
+        className="bg-indigo-600 text-white px-6 py-2 flex items-center space-x-2 rounded-lg hover:bg-indigo-700 transition mt-6"
+        onClick={() => handleclick()}
+      >
         <FiUserPlus className="text-xl" />
         <span>Onboard Applicant</span>
       </button>

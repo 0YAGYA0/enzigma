@@ -14,7 +14,7 @@ const OnboardingCard = () => {
       console.log("PDF uploaded:", pdfFile);
       navigate("/onboarding-form"); // Redirect to onboarding form
     } else if (option === "manual") {
-      navigate("/temp"); // Redirect to manual onboarding form
+      navigate("/onb/details"); // Redirect to manual onboarding form
     }
   };
 

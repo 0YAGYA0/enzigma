@@ -1,167 +1,62 @@
-// import React, { useState } from "react";
-
-// const TokenGenerator = () => {
-//   const [email, setEmail] = useState(""); // Email input for sending tokens
-//   const [token, setToken] = useState(null); // Store the single generated token
-//   const [sendingToken, setSendingToken] = useState(null); // To track which token is being sent
-//   const [isLoading, setIsLoading] = useState(false); // Loading state for generating the token
-
-//   // Function to generate a single token
-//   const handleGenerateToken = async () => {
-//     setIsLoading(true);
-//     try {
-//       const response = await fetch("/api/generate-tokens", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ count: 1 }), // Generate only one token
-//       });
-//       const data = await response.json();
-//       if (data.success) {
-//         setToken(data.tokens[0] "); // Set the first (and only) token
-//       } else {
-//         alert("Error generating token");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   // Function to send the token to the provided email
-//   const handleSendToken = async () => {
-//     if (!email) {
-//       alert("Please enter an email to send the token.");
-//       return;
-//     }
-//     setSendingToken(token); // Track the token being sent
-//     try {
-//       const response = await fetch("/api/send-token", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ email, token }), // Sending the email and token to backend
-//       });
-//       const data = await response.json();
-//       if (data.success) {
-//         alert(`Token sent to ${email}`);
-//       } else {
-//         alert("Error sending token");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//     } finally {
-//       setSendingToken(null); // Reset sending token state
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-200 flex justify-center items-center p-6">
-//       <div className="bg-white rounded-lg shadow-xl p-8 w-full sm:w-96">
-//         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-8">
-//           Token Generator
-//         </h2>
-
-//         {/* Generate Token Section */}
-//         <div className="mb-6">
-//           <button
-//             onClick={handleGenerateToken}
-//             disabled={isLoading}
-//             className={`w-full py-3 text-white font-medium rounded-lg transition-all duration-200 ${
-//               isLoading
-//                 ? "bg-blue-300 cursor-not-allowed"
-//                 : "bg-blue-600 hover:bg-blue-700"
-//             }`}
-//           >
-//             {isLoading ? "Generating..." : "Generate Token"}
-//           </button>
-//         </div>
-
-//         {/* Token Display Section */}
-//         {token && (
-//           <div className="mb-6">
-//             <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-sm">
-//               <span className="font-mono text-gray-700">{token}</span>
-//               <div className="flex space-x-2">
-//                 <button
-//                   onClick={() => navigator.clipboard.writeText(token)} // Copy to clipboard
-//                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-//                 >
-//                   Copy
-//                 </button>
-//                 <button
-//                   onClick={handleSendToken} // Send token via email
-//                   disabled={sendingToken === token}
-//                   className={`px-4 py-2 rounded-lg font-semibold text-white ${
-//                     sendingToken === token
-//                       ? "bg-gray-400 cursor-not-allowed"
-//                       : "bg-green-600 hover:bg-green-700"
-//                   }`}
-//                 >
-//                   {sendingToken === token ? "Sending..." : "Send"}
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         )}
-
-//         {/* Email Input Section */}
-//         {token && (
-//           <div className="mb-6">
-//             <label
-//               htmlFor="email"
-//               className="block text-gray-700 font-medium mb-2"
-//             >
-//               Enter Email (for sending token)
-//             </label>
-//             <input
-//               id="email"
-//               type="email"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)} // Email state change
-//               placeholder="Enter email address"
-//               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-//             />
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TokenGenerator;
-
 import React, { useState } from "react";
-import { FiCopy, FiSend } from "react-icons/fi";
+import {
+  FiCopy,
+  FiSend,
+  FiTrash,
+  FiEdit,
+  FiChevronDown,
+  FiChevronUp,
+} from "react-icons/fi";
 
 const TokenUI = () => {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [tokens, setTokens] = useState([
+    { id: 1, token: "12345-ABCDE", status: "Unused" },
+    { id: 2, token: "67890-FGHIJ", status: "Unused" },
+    { id: 3, token: "11223-KLMNO", status: "Used" },
+    { id: 4, token: "44556-PQRST", status: "Unused" },
+  ]);
+  const [users] = useState([
+    {
+      id: 1,
+      Token: "12345-ABCDE",
+      application: "Application 1",
+      status: "Verified",
+    },
+    {
+      id: 2,
+      Token: "67890-FGHIJ",
+      application: "Application 2",
+      status: "Pending",
+    },
+    {
+      id: 3,
+      Token: "44556-PQRST",
+      application: "Application 3",
+      status: "Verified",
+    },
+  ]);
 
-  // Generate Token
+  const [isUnusedTokensOpen, setIsUnusedTokensOpen] = useState(false);
+
   const handleGenerateToken = () => {
     setIsLoading(true);
     setTimeout(() => {
-      const randomToken = Math.random().toString(36).substr(2, 5).toUpperCase();
+      const randomToken = Math.random().toString(36).substr(2, 8).toUpperCase();
       setToken(randomToken);
       setIsLoading(false);
     }, 1000);
   };
 
-  // Copy Token
   const handleCopyToken = () => {
     if (token) {
-      const tokenInput = document.getElementById("token-field");
-      tokenInput.select();
-      document.execCommand("copy");
+      navigator.clipboard.writeText(token);
+      alert("Token copied to clipboard!");
     }
   };
 
-  // Send Token
   const handleSendToken = () => {
     if (!email) {
       alert("Please enter an email to send the token.");
@@ -170,94 +65,183 @@ const TokenUI = () => {
     alert(`Token "${token}" sent to ${email}`);
   };
 
+  const unusedTokens = tokens.filter((token) => token.status === "Unused");
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center px-6">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-lg p-8">
-        {/* Header Section */}
-        <div className="flex justify-between items-center mb-6">
-          <button className="text-gray-500 hover:text-gray-700">← Back</button>
-        </div>
-
-        {/* Token Section */}
-        <div className="flex flex-col items-center space-y-4 mb-6">
-          {token ? (
-            <>
-              <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
-                Token Generator
-              </h2>
-              <p className="text-gray-600 text-center mb-6">
-                Generate a 5-digit token and send it to a recipient.
-              </p>
-              <div className="flex items-center space-x-2">
-                <input
-                  id="token-field"
-                  value={token}
-                  readOnly
-                  className="w-48 px-4 py-2 border border-gray-300 rounded-lg text-center text-lg font-mono font-semibold text-gray-700"
-                />
-                <button
-                  onClick={handleCopyToken}
-                  className="text-blue-500 hover:text-blue-700"
-                  title="Copy Token"
+    <>
+      <h1 className="text-2xl font-bold text-gray-800 p-8">Token Management</h1>
+      <div className="p-6 flex flex-col items-center space-y-8">
+        {/* Token Overview Table */}
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-5xl">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Tokens Overview
+          </h2>
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-indigo-100">
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Token
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Application
+                </th>
+                <th className="px-6 py-3 text-gray-600 font-semibold text-sm">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr
+                  key={user.id}
+                  className={`transition hover:bg-indigo-50 ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }`}
                 >
-                  <FiCopy className="text-2xl" />
-                </button>
-              </div>
-            </>
-          ) : (
-            <button
-              onClick={handleGenerateToken}
-              className={`w-full py-3 text-lg font-medium text-white rounded-lg shadow-md ${
-                isLoading
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
-              }`}
-            >
-              {isLoading ? "Generating..." : "Generate Token"}
-            </button>
-          )}
+                  <td className="px-6 py-4 text-gray-700 font-medium">
+                    {user.Token}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        user.status === "Verified"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">
+                    {user.application}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex space-x-4">
+                      <button className="text-indigo-500 hover:text-indigo-600">
+                        <FiEdit className="text-xl" />
+                      </button>
+                      <button className="text-red-500 hover:text-red-600">
+                        <FiTrash className="text-xl" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* Email Input & Send Button (Visible only when token exists) */}
-        {token && (
-          <>
-            <div className="mb-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter recipient's email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <button
-              onClick={handleSendToken}
-              disabled={!email}
-              className={`w-full py-3 flex items-center justify-center space-x-2 text-lg font-medium text-white rounded-lg shadow-md ${
-                !email
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-600"
-              }`}
-            >
-              <FiSend className="text-xl" />
-              <span>Send Token</span>
-            </button>
-          </>
-        )}
+        {/* Unused Tokens and Token Generator */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+          {/* Unused Tokens */}
+          <div className="bg-white shadow-md rounded-lg p-6 h-full">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex justify-between items-center">
+              Unused Tokens
+              <button
+                onClick={() => setIsUnusedTokensOpen(!isUnusedTokensOpen)}
+              >
+                {isUnusedTokensOpen ? (
+                  <FiChevronUp className="text-xl text-gray-500" />
+                ) : (
+                  <FiChevronDown className="text-xl text-gray-500" />
+                )}
+              </button>
+            </h2>
+            {isUnusedTokensOpen && (
+              <>
+                {unusedTokens.length > 0 ? (
+                  unusedTokens.slice(0, 3).map((token) => (
+                    <div
+                      key={token.id}
+                      className="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-2"
+                    >
+                      <span className="text-gray-700 font-medium text-sm">
+                        {token.token}
+                      </span>
+                      <div className="flex space-x-4">
+                        <button
+                          className="text-blue-500 hover:text-blue-600 font-medium text-sm flex items-center"
+                          onClick={() =>
+                            navigator.clipboard.writeText(token.token)
+                          }
+                        >
+                          <FiCopy className="mr-1" /> Copy
+                        </button>
+                        <button
+                          className="text-red-500 hover:text-red-600 font-medium text-sm flex items-center"
+                          onClick={() =>
+                            setTokens(tokens.filter((t) => t.id !== token.id))
+                          }
+                        >
+                          <FiTrash className="mr-1" /> Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No unused tokens available.</p>
+                )}
+                {unusedTokens.length > 3 && (
+                  <p className="text-center text-gray-500">
+                    {unusedTokens.length - 3} more unused tokens...
+                  </p>
+                )}
+              </>
+            )}
+          </div>
 
-        {/* Back to Dashboard Section */}
-        {token && (
-          <button
-            className="mt-6 w-full py-3 text-lg font-medium text-white bg-gray-800 hover:bg-gray-900 rounded-lg shadow-md"
-            onClick={() => alert("Navigating back to dashboard...")}
-          >
-            Back to Dashboard
-          </button>
-        )}
-
-        {/* Support Section */}
+          {/* Token Generator */}
+          <div className="rounded-lg p-6 h-full">
+            {!token ? (
+              <button
+                onClick={handleGenerateToken}
+                className={`w-full py-3 text-lg font-medium text-white rounded-lg transition ${
+                  isLoading
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                }`}
+              >
+                {isLoading ? "Generating..." : "Generate Token"}
+              </button>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    value={token}
+                    readOnly
+                    className="w-48 px-4 py-2 border border-gray-300 rounded-lg text-center text-lg font-mono font-semibold text-gray-800"
+                  />
+                  <button
+                    onClick={handleCopyToken}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <FiCopy className="text-xl" />
+                  </button>
+                </div>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={handleSendToken}
+                    className="w-full py-3 text-white rounded-lg bg-green-600 hover:bg-green-700"
+                  >
+                    Send Token
+                  </button>
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

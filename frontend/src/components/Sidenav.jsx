@@ -27,6 +27,18 @@ const sidebar = [
   },
 
   {
+    name: "Onboard Applicant",
+    link: "/onb",
+    icon: <SettingsOutlinedIcon className="mr-3" />,
+  },
+
+  {
+    name: "Token",
+    link: "/hr",
+    icon: <SettingsOutlinedIcon className="mr-3" />,
+  },
+
+  {
     name: "Settings",
     link: "/settings",
     icon: <SettingsOutlinedIcon className="mr-3" />,
