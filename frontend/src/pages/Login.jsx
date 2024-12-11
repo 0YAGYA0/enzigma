@@ -153,7 +153,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-blue-50 to-blue-100">
       {/* Right Section */}
-      <div className="flex flex-1 justify-center items-center bg-gradient-to-b from-blue-50 to-blue-100 p-8 shadow-xl rounded-lg">
+      <div className="flex flex-1 justify-center items-center bg-white p-8 shadow-xl rounded-lg">
         <div className="w-full max-w-lg">
           <div className="flex justify-between items-center mb-6">
             <IconButton

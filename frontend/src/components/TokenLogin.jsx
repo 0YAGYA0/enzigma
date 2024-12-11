@@ -54,7 +54,7 @@ const TokenLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex justify-center items-center">
+    <div className="min-h-screen bg-white flex justify-center items-center">
       <div className="  rounded-lg p-8 w-full max-w-lg">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">

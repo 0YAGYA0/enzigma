@@ -39,11 +39,6 @@ const sidebar = [
   },
 
   {
-    name: "Settings",
-    link: "/settings",
-    icon: <SettingsOutlinedIcon className="mr-3" />,
-  },
-  {
     name: "Logout",
     link: "/",
     icon: <ExitToAppIcon className="mr-3" />,

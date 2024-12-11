@@ -201,7 +201,7 @@ const AllApplications = () => {
               ${
                 activeTab === tab
                   ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 text-gray-600"
+                  : " text-gray-600"
               }
               hover:bg-indigo-500 hover:text-white`}
             >
@@ -295,13 +295,6 @@ const AllApplications = () => {
       </div>
 
       {/* Add Applicant Button */}
-      <button
-        className="bg-indigo-600 text-white px-6 py-2 flex items-center space-x-2 rounded-lg hover:bg-indigo-700 transition mt-6"
-        onClick={() => handleclick()}
-      >
-        <FiUserPlus className="text-xl" />
-        <span>Onboard Applicant</span>
-      </button>
     </div>
   );
 };

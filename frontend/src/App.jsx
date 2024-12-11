@@ -14,6 +14,7 @@ import UserDashboard from "./pages/UserDashboard";
 import Content from "./layouts/content";
 import AllApplications from "./pages/AllApplications";
 import UserDetail from "./pages/UserDetail";
+import Account from "./pages/Account";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/onb" element={<OnboardingCard />} />
           <Route path="/onb/details" element={<Temp />} />
           <Route path="/hr" element={<TokenGenerator />} />
+          <Route path="/account" element={<Account />} />
         </Route>
       </Routes>
     </div>

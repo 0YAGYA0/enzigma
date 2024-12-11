@@ -73,9 +73,9 @@ const TokenUI = () => {
       <div className="p-6 flex flex-col items-center space-y-8">
         {/* Token Overview Table */}
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-5xl">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          {/* <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Tokens Overview
-          </h2>
+          </h2> */}
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-indigo-100">

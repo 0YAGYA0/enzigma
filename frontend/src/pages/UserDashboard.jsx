@@ -314,7 +314,7 @@ const UserDashboard = () => {
             {notVerifiedUsers.slice(0, 3).map((user) => (
               <div
                 key={user.id}
-                className="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-2"
+                className="flex justify-between items-center  p-4 rounded-lg mb-2"
               >
                 <div>
                   <h3 className="font-medium text-gray-700">{user.name}</h3>
@@ -349,7 +349,7 @@ const UserDashboard = () => {
             {verifiedUsers.slice(0, 3).map((user) => (
               <div
                 key={user.id}
-                className="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-2"
+                className="flex justify-between items-center  p-4 rounded-lg mb-2"
               >
                 <div>
                   <h3 className="font-medium text-gray-700">{user.name}</h3>
@@ -387,7 +387,7 @@ const UserDashboard = () => {
             {unusedTokens.slice(0, 3).map((token) => (
               <div
                 key={token.id}
-                className="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-2"
+                className="flex justify-between items-center p-4 rounded-lg mb-2"
               >
                 <span className="text-gray-700 font-medium text-sm">
                   {token.token}
@@ -446,11 +446,6 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-
-      <button className="bg-indigo-600 text-white px-6 py-2 flex items-center space-x-2 rounded-lg hover:bg-indigo-700 transition mt-6">
-        <FiUserPlus className="text-xl" />
-        <span>Onboard Applicant</span>
-      </button>
     </div>
   );
 };
