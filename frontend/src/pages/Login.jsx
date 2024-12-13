@@ -43,8 +43,6 @@ const Login = () => {
       });
 
       const result = await response.json();
-      console.log("Response: ", result); // Debugging response
-
       if (response.ok) {
         showToast("Login successful! Redirecting to dashboard...", "success");
         setTimeout(() => navigate("/dashboard"), 1000);

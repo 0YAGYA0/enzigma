@@ -1,48 +1,52 @@
-import React, { useState } from "react";
-import { FiSearch, FiEdit, FiTrash, FiUserPlus } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { FiSearch, FiEdit, FiTrash } from "react-icons/fi";
 
 const UserDetail = () => {
-  const [users] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      role: "Admin",
-      status: "Verified",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      role: "Editor",
-      status: "Not Verified",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      role: "Viewer",
-      status: "Not Verified",
-    },
-    {
-      id: 4,
-      name: "Alice Brown",
-      email: "alice.brown@example.com",
-      role: "Admin",
-      status: "Not Verified",
-    },
-  ]);
-
   const [activeTab, setActiveTab] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUser] = useState([]); // Initialize as an empty array
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    if (activeTab === "All") return matchesSearch;
-    return matchesSearch && user.status === activeTab;
-  });
+  // Make sure users is an array before applying .filter
+  const filteredUsers = Array.isArray(users)
+    ? users.filter((user) => {
+        const matchesSearch =
+          (user.username ? user.username.toLowerCase() : "").includes(
+            searchTerm.toLowerCase()
+          ) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
+        if (activeTab === "All") return matchesSearch;
+        return (
+          matchesSearch &&
+          (user.isVerified ? "Verified" : "Not Verified") === activeTab
+        );
+      })
+    : [];
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/v1/user/all/", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          const result = await response.json();
+          showToast(result.message || "Unable to get account info!", "error");
+          return;
+        }
+
+        const result = await response.json();
+        // Ensure that result.data is an array, if not set as empty array
+        setUser(Array.isArray(result.data) ? result.data : []);
+      } catch (error) {
+        showToast("An error occurred while fetching account info.", "error");
+        console.error("Fetch Error:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-8">
@@ -59,9 +63,7 @@ const UserDetail = () => {
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-2 rounded-full font-medium transition 
               ${
-                activeTab === tab
-                  ? "bg-indigo-600 text-white"
-                  : " text-gray-600"
+                activeTab === tab ? "bg-indigo-600 text-white" : "text-gray-600"
               }
               hover:bg-indigo-500 hover:text-white`}
             >
@@ -108,62 +110,64 @@ const UserDetail = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user, index) => (
-              <tr
-                key={user.id}
-                className={`transition hover:shadow-md ${
-                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                }`}
-              >
-                <td className="px-6 py-4 text-gray-700 font-medium flex items-center space-x-3">
-                  <span>{user.name}</span>
-                </td>
-                <td className="px-6 py-4 text-gray-500">{user.email}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      user.role === "Admin"
-                        ? "bg-green-100 text-green-600"
-                        : user.role === "Editor"
-                        ? "bg-yellow-100 text-yellow-600"
-                        : "bg-blue-100 text-blue-600"
-                    }`}
-                  >
-                    {user.role}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      user.status === "Verified"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {user.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <div className="flex justify-center space-x-4">
-                    <button className="text-indigo-500 hover:text-indigo-600 transition">
-                      <FiEdit className="text-xl" />
-                    </button>
-                    <button className="text-red-500 hover:text-red-600 transition">
-                      <FiTrash className="text-xl" />
-                    </button>
-                  </div>
+            {filteredUsers.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center text-gray-500 py-6">
+                  No users found.
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredUsers.map((user, index) => (
+                <tr
+                  key={user._id}
+                  className={`transition hover:shadow-md ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }`}
+                >
+                  <td className="px-6 py-4 text-gray-700 font-medium flex items-center space-x-3">
+                    <span>{user.username || "No username"}</span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">{user.email}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        user.role === "Admin"
+                          ? "bg-green-100 text-green-600"
+                          : user.role === "Editor"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : "bg-blue-100 text-blue-600"
+                      }`}
+                    >
+                      {user.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        user.isVerified
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {user.isVerified ? "Verified" : "Not Verified"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <div className="flex justify-center space-x-4">
+                      <button className="text-indigo-500 hover:text-indigo-600 transition">
+                        <FiEdit className="text-xl" />
+                      </button>
+                      <button className="text-red-500 hover:text-red-600 transition">
+                        <FiTrash className="text-xl" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
-
-        {filteredUsers.length === 0 && (
-          <div className="text-center text-gray-500 mt-6">No users found.</div>
-        )}
       </div>
-
-      {/* Add Applicant Button */}
     </div>
   );
 };

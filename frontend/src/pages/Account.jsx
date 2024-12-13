@@ -50,11 +50,49 @@ const Account = () => {
   }, []);
 
   const handlePasswordChange = async () => {
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      showToast("All fields are required.", "error");
+      return;
+    }
+
     if (newPassword !== confirmNewPassword) {
       showToast("New password and confirmation do not match.", "error");
       return;
-    } else {
-      showToast("Password updated successfully.", "success");
+    }
+
+    if (newPassword === currentPassword) {
+      showToast("New password matches with old password.", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/user/change-password/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ oldPassword: currentPassword, newPassword }),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Response: ", result); // Debugging response
+
+      if (response.ok) {
+        showToast("Password updated successfully.", "success");
+        setIsEditingPassword(false);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      } else {
+        showToast(result.message || "Failed to update password.", "error");
+      }
+    } catch (error) {
+      showToast("An error occurred. Please try again later.", "error");
+      console.error("Network Error: ", error);
     }
   };
 

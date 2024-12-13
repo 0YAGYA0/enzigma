@@ -111,7 +111,6 @@ const myAccount=async(req,res,next)=>{
        
         const user = await User.findById(req.user?._id).select('name username email role isVerified');
                 
-        console.log(user);
         
         if (!user) {
             return next(new apiError(404, "User not found"));
@@ -175,4 +174,23 @@ const deleteUserAccount = async(req,res,next)=>{
         return next (new apiError(500,"Internal server error"))    }
 }
 
-export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount, myAccount}
+
+const getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find().select(' _id username email role isVerified'); // Await the result of User.find()
+        
+        if (!users || users.length === 0) { // Check if users array is empty
+            return next(new apiError(404, "No users found"));
+        }
+
+        return res.status(200).json(
+            new apiResponse(200, "Users retrieved successfully", users)
+        );
+    } catch (error) {
+        console.error("Error fetching users:", error); // Add logging for debugging
+        return next(new apiError(500, "Internal server error"));
+    }
+};
+
+
+export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount, myAccount, getUsers}

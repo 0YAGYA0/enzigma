@@ -5,6 +5,9 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import showToast from "./toastNotification";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppNav = () => {
   const navigate = useNavigate();
@@ -51,8 +54,25 @@ const AppNav = () => {
     navigate("/account");
   };
 
-  const handleLogout = () => {
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/user/logout/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        navigate("/");
+      }
+    } catch (error) {
+      showToast("An error occurred. Please try again later.", "error");
+    }
   };
 
   return (
@@ -154,6 +174,7 @@ const AppNav = () => {
           <LogoutIcon />
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 };
