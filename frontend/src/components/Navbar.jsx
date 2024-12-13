@@ -7,12 +7,6 @@ const Navbar = () => {
         <h2 className="text-white text-xl font-semibold">Enzigma</h2>
         <div className="space-x-6">
           <a
-            href="#home"
-            className="text-white hover:text-gray-200 transition duration-300"
-          >
-            Home
-          </a>
-          <a
             href="#about"
             className="text-white hover:text-gray-200 transition duration-300"
           >
@@ -30,6 +24,13 @@ const Navbar = () => {
             className="text-white hover:text-gray-200 transition duration-300"
           >
             Docs
+          </a>
+
+          <a
+            href="#contact"
+            className="text-white hover:text-gray-200 transition duration-300"
+          >
+            Register
           </a>
         </div>
       </div>

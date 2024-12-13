@@ -10,9 +10,9 @@ const userSchema= new Schema({
         required: true,
     },
 
-
     username:{
         type:String,
+        unique:true,
         required: true,
     },
 
@@ -37,6 +37,11 @@ const userSchema= new Schema({
 
     refreshToken:{
         type:String
+    },
+
+    isVerified:{
+        type: Boolean,
+        default: false
     }
 })
 

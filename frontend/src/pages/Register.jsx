@@ -6,6 +6,9 @@ import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import showToast from "../components/toastNotification";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,13 +17,51 @@ const Register = () => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
+  const [formData, setFormData] = React.useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+  });
   const handleNavigateHome = () => {
     navigate("/");
   };
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    navigate("/login");
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/user/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        showToast(
+          "Registration successful! Redirecting to login...",
+          "success"
+        );
+        setTimeout(() => navigate("/login"), 1000); // Redirect to login after 3 seconds
+      } else {
+        showToast(result.message || "Registration failed!", "error");
+      }
+    } catch (error) {
+      showToast("An error occurred. Please try again later.", "error");
+      console.error("Network Error: ", error);
+    }
   };
 
   return (
@@ -55,30 +96,50 @@ const Register = () => {
             </p>
           </div>
 
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleRegister}>
             <div className="mb-6">
               <TextField
                 fullWidth
                 label="Full Name"
+                name="name"
                 variant="outlined"
                 className="bg-gray-50"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-6">
+              <TextField
+                fullWidth
+                label="Username"
+                name="username"
+                variant="outlined"
+                className="bg-gray-50"
+                value={formData.username}
+                onChange={handleChange}
               />
             </div>
             <div className="mb-6">
               <TextField
                 fullWidth
                 label="Email Address"
+                name="email"
                 variant="outlined"
                 className="bg-gray-50"
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
             <div className="mb-6 relative">
               <TextField
                 fullWidth
                 label="Password"
+                name="password"
                 variant="outlined"
                 type={showPassword ? "text" : "password"}
                 className="bg-gray-50"
+                value={formData.password}
+                onChange={handleChange}
                 InputProps={{
                   endAdornment: (
                     <IconButton
@@ -111,6 +172,9 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

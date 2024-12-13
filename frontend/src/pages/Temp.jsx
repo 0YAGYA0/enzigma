@@ -1,29 +1,49 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Temp = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    gender: "",
-    age: "",
+    firstName: "John",
+    lastName: "Doe",
+    gender: "Male",
+    age: "30",
+    dateOfBirth: "15-10-25",
     address: {
-      street: "",
-      city: "",
-      zip: "",
+      street: "123 Main St",
+      city: "New York",
+      zip: "10001",
+      state: "mumbai",
+      country: "India",
     },
     emergencyContact: {
-      name: "",
-      phone: "",
+      name: "Jane Doe",
+      phone: "123-456-7890",
     },
-    relocation: false,
+    relocation: true,
     education: [
-      { school: "", qualification: "", percentage: "", passOutYear: "" },
+      {
+        school: "ABC University",
+        qualification: "Bachelors",
+        percentage: "85%",
+        passOutYear: "2020",
+      },
     ],
-    trainings: [{ program: "", contents: "", organizedBy: "", duration: "" }],
-    certifications: [{ srNo: "", certification: "", duration: "" }],
-    familyMembers: [{ relation: "", occupation: "", location: "" }],
+    trainings: [
+      {
+        program: "React Training",
+        contents: "React basics",
+        organizedBy: "XYZ Corp",
+        duration: "1 Month",
+      },
+    ],
+    certifications: [
+      { srNo: "12345", certification: "React Certified", duration: "6 Months" },
+    ],
+    familyMembers: [
+      { relation: "Brother", occupation: "Engineer", location: "New York" },
+    ],
   });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const nameParts = name.split(".");
@@ -78,6 +98,7 @@ const Temp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    navigate("/overview", { state: { formData } });
   };
 
   return (
@@ -103,7 +124,7 @@ const Temp = () => {
                     <input
                       name="name.firstName"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -124,7 +145,7 @@ const Temp = () => {
                     <input
                       name="name.lastName"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -178,7 +199,7 @@ const Temp = () => {
                     <input
                       name="permanentAddress.street"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -189,7 +210,7 @@ const Temp = () => {
                     <input
                       name="permanentAddress.city"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -200,7 +221,7 @@ const Temp = () => {
                     <input
                       name="permanentAddress.state"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -211,7 +232,7 @@ const Temp = () => {
                     <input
                       name="permanentAddress.zipCode"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -222,7 +243,7 @@ const Temp = () => {
                     <input
                       name="permanentAddress.country"
                       type="text"
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -242,9 +263,8 @@ const Temp = () => {
                     <input
                       name="emergencyContact.name"
                       type="text"
-                      value={formData.emergencyContact.name}
                       onChange={handleInputChange}
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -255,9 +275,8 @@ const Temp = () => {
                     <input
                       name="emergencyContact.phone"
                       type="tel"
-                      value={formData.emergencyContact.phone}
                       onChange={handleInputChange}
-                      required
+                      //
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -293,7 +312,6 @@ const Temp = () => {
                           <input
                             name="degree"
                             type="text"
-                            value={edu.degree}
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -304,7 +322,6 @@ const Temp = () => {
                           <input
                             name="institution"
                             type="text"
-                            value={edu.institution}
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -315,7 +332,6 @@ const Temp = () => {
                           <input
                             name="percentage"
                             type="number"
-                            value={edu.percentage}
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -326,7 +342,6 @@ const Temp = () => {
                           <input
                             name="passOutYear"
                             type="text"
-                            value={edu.passOutYear}
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -375,7 +390,6 @@ const Temp = () => {
                           <input
                             name="program"
                             type="text"
-                            value={train.program}
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
                             }
@@ -386,7 +400,6 @@ const Temp = () => {
                           <input
                             name="contents"
                             type="text"
-                            value={train.contents}
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
                             }
@@ -397,7 +410,6 @@ const Temp = () => {
                           <input
                             name="organizedBy"
                             type="text"
-                            value={train.organizedBy}
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
                             }
@@ -408,7 +420,6 @@ const Temp = () => {
                           <input
                             name="duration"
                             type="text"
-                            value={train.duration}
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
                             }
@@ -454,7 +465,6 @@ const Temp = () => {
                           <input
                             name="srNo"
                             type="text"
-                            value={cert.srNo}
                             onChange={(e) =>
                               handleArrayChange(e, "certifications", index)
                             }
@@ -465,7 +475,6 @@ const Temp = () => {
                           <input
                             name="certification"
                             type="text"
-                            value={cert.certification}
                             onChange={(e) =>
                               handleArrayChange(e, "certifications", index)
                             }
@@ -476,7 +485,6 @@ const Temp = () => {
                           <input
                             name="duration"
                             type="text"
-                            value={cert.duration}
                             onChange={(e) =>
                               handleArrayChange(e, "certifications", index)
                             }
@@ -522,7 +530,6 @@ const Temp = () => {
                           <input
                             name="relation"
                             type="text"
-                            value={fam.relation}
                             onChange={(e) =>
                               handleArrayChange(e, "familyMembers", index)
                             }
@@ -533,7 +540,6 @@ const Temp = () => {
                           <input
                             name="occupation"
                             type="text"
-                            value={fam.occupation}
                             onChange={(e) =>
                               handleArrayChange(e, "familyMembers", index)
                             }
@@ -544,7 +550,6 @@ const Temp = () => {
                           <input
                             name="location"
                             type="text"
-                            value={fam.location}
                             onChange={(e) =>
                               handleArrayChange(e, "familyMembers", index)
                             }
@@ -567,9 +572,10 @@ const Temp = () => {
               <div className="mt-8 text-center">
                 <button
                   type="submit"
+                  onClick={handleSubmit}
                   className="py-2 px-6 bg-gray-900 text-white rounded-md transition-transform transform hover:scale-105 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-600 focus:ring-opacity-75"
                 >
-                  Submit
+                  Save & next
                 </button>
               </div>
             </div>

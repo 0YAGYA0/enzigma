@@ -2,15 +2,23 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-import {apiError} from "./utils/apiError"
+import {apiError} from "./utils/apiError.js"
 
 const app=express()
 
+const corsOptions = {
+    origin: "http://localhost:5173",
+    credentials: true,
+    }
+
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser())
 
 
+import userRouter from "./routes/userRoute.js"
+
+app.use("/api/v1/user", userRouter)
 
 app.use((err, req, res, next) => {
     if (err instanceof apiError) {

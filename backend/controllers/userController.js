@@ -33,52 +33,48 @@ const registerUser = async (req, res,next) => {
     }
 };
 
-const loginUser=async(req,res,next)=>{
-
+const loginUser = async (req, res, next) => {
     try {
-        const {username,password}=req.body
-    
-        if(!username || !password){
-            return next(new apiError(400,"input fields required"))
-        }
-    
-        const user= await User.findOne({username:username})
+      const { username, password } = req.body;
+  
+      if (!username || !password) {
+        return next(new apiError(400, "Input fields are required"));
+      }
+      const user = await User.findOne({ username:username });
+  
+      if (!user) {
+        return next(new apiError(404, "User does not exist"));
+      }
+  
+      const checkPassword = await user.isPasswordCorrect(password);
+  
+      if (!checkPassword) {
+        return next(new apiError(401, "Invalid user credentials"));
+      }
+  
+      const { refreshToken } = await generateTokens(user._id);
+  
+      const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
         
-        
-        if(!user){
-            return next(new apiError(400,"User does not exist"))
-        }
-        
-    
-        const checkPassword=await user.isPasswordCorrect(password)
-        
-        if(!checkPassword){
-            return next(new apiError(400,"Invalid user credentials"))
-        }
-
-        const {refreshToken}= await generateTokens(user._id)
-
-
-        const options = {
-            httpOnly: true,
-            secure: true
-        }
-
-        return res.status(200)
+      };
+  
+      return res
+        .status(200)
         .cookie("refreshToken", refreshToken, options)
-        .json(
-            new apiResponse(200,"Logged in successfully")
-        )
-
+        .json(new apiResponse(200, "Logged in successfully"));
     } catch (error) {
-        next(new apiError(400,"Internal server Error while logging in"))
+      console.error(error);
+      next(new apiError(500, "Internal server error while logging in"));
     }
-}
+  };
 
 const logoutUser=async(req,res,next)=>{
 
     try {
-        const user =await User.findByIdAndUpdate(
+          const user =await User.findByIdAndUpdate(
             req.user._id,
             {
                 $unset:{
@@ -94,7 +90,6 @@ const logoutUser=async(req,res,next)=>{
             return next(new apiError(400,"Unable to logout try again"))
         }
 
-
         const options={
             httpOnly:true,
             secure:true
@@ -109,6 +104,26 @@ const logoutUser=async(req,res,next)=>{
         next(new apiError(400,"Internal Server error"))
     }
     
+}
+
+const myAccount=async(req,res,next)=>{
+    try {
+       
+        const user = await User.findById(req.user?._id).select('name username email role isVerified');
+                
+        console.log(user);
+        
+        if (!user) {
+            return next(new apiError(404, "User not found"));
+        }
+                
+        return res.status(200).json(
+            new apiResponse(200, user)
+        );
+
+    } catch (error) {
+        next(new apiError(400,"Internal Server error"))
+    }
 }
 
 const changePassword= async(req,res,next)=>{
@@ -160,4 +175,4 @@ const deleteUserAccount = async(req,res,next)=>{
         return next (new apiError(500,"Internal server error"))    }
 }
 
-export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount}
+export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount, myAccount}
