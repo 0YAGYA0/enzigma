@@ -150,30 +150,94 @@ const changePassword= async(req,res,next)=>{
 
 }
 
-const deleteUserAccount = async(req,res,next)=>{
+const deleteUserAccount = async (req, res, next) => {
     try {
-        //const {userId} =req.body
-        //const user
-        const deleteUser =await User.findByIdAndDelete(req.user._id)
-
-        if(!deleteUser){
-            return next(new apiError(400,"Unable to find user check user id"))
-        }
-
-        const checkuser= await User.findById(req.user._id)
-        if(checkuser)
-            {
-                return next(new apiError(400,"user not deleted"))
-            }
-        
-        return res.status(200).json(
-            new apiResponse(200,"User deleted successfully")
-        )
- 
+      const { userId } = req.params; // Get userId from the URL params
+  
+      const deleteUser = await User.findByIdAndDelete(userId); // Delete the user by userId
+  
+      if (!deleteUser) {
+        return next(new apiError(400, "Unable to find user. Please check the user ID."));
+      }
+  
+      // Optionally, check if the user is actually deleted
+      const checkUser = await User.findById(userId);
+      if (checkUser) {
+        return next(new apiError(400, "User not deleted"));
+      }
+  
+      return res.status(200).json(
+        new apiResponse(200, "User deleted successfully")
+      );
     } catch (error) {
-        return next (new apiError(500,"Internal server error"))    }
-}
+      return next(new apiError(500, "Internal server error"));
+    }
+  };
+  
+const verifyUser = async (req, res, next) => {
+    try {
+      const { userId } = req.params; // Extract userId from the request parameters
+  
+      // Find the user by userId
+      const user = await User.findById(userId);
+  
+      // If the user is not found, return an error
+      if (!user) {
+        return next(new apiError(404, "User not found"));
+      }
+  
+      // Check if the user is already verified
+      if (user.isVerified) {
+        return next(new apiError(400, "User is already verified"));
+      }
+  
+      // Set the user's verification status to true
+      user.isVerified = true;
+  
+      // Save the updated user document
+      await user.save();
+  
+      // Respond with a success message
+      return res.status(200).json(new apiResponse(200, "User verified successfully"));
+    } catch (error) {
+      return next(new apiError(500, "Internal server error"));
+    }
+  };
 
+   const updateUser = async (req, res, next) => {
+    try {
+      const { userId } = req.params;  // Get the userId from the request params
+      const { email, username, role, isVerified } = req.body; // Get the data to update from the request body
+  
+      // Find the user by their ID
+      const user = await User.findById(userId);
+  
+      // If the user is not found, return an error
+      if (!user) {
+        return next(new apiError(404, "User not found"));
+      }
+  
+      // Check if the authenticated user is trying to update their own details
+      if (req.user._id !== userId && req.user.role !== "Admin") {
+        return next(new apiError(403, "You are not authorized to update this user"));
+      }
+  
+      // Update the user details only if they are provided in the request body
+      if (email) user.email = email;
+      if (username) user.username = username;
+      if (role) user.role = role;
+      if (typeof isVerified === "boolean") user.isVerified = isVerified; // Ensuring isVerified is a boolean
+  
+      // Save the updated user document
+      await user.save();
+  
+      // Respond with the updated user information
+      return res.status(200).json(new apiResponse(200, "User updated successfully", user));
+    } catch (error) {
+      return next(new apiError(500, "Internal server error"));
+    }
+  };
+  
 
 const getUsers = async (req, res, next) => {
     try {
@@ -193,4 +257,4 @@ const getUsers = async (req, res, next) => {
 };
 
 
-export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount, myAccount, getUsers}
+export {registerUser,loginUser,logoutUser,changePassword, deleteUserAccount, myAccount, getUsers, verifyUser, updateUser}
