@@ -5,7 +5,6 @@ const detailSchema = new Schema({
     name:{
         firstName: {
         type: String,
-        required: true,
         },
 
         middleName: {
@@ -14,34 +13,28 @@ const detailSchema = new Schema({
 
         lastName: {
         type: String,
-        required: true,
         },
     },
 
     permanentAddress: {
         street: {
             type: String,
-            required: true,
         },
 
         city: {
             type: String,
-            required: true,
         },
 
         state: {
             type: String,
-            required: true,
         },
 
         zipCode: {
             type: String,
-            required: true,
         },
 
         country: {
             type: String,
-            required: true,
         },
     },
 
@@ -86,7 +79,6 @@ const detailSchema = new Schema({
 
     mobile: {
         type: String,
-        required: true,
     },
 
     panNo: {
@@ -99,18 +91,15 @@ const detailSchema = new Schema({
 
     email: {
         type: String,
-        required: true,
     },
 
     emergencyContact: {
         name: {
             type: String,
-            required: true,
         },
 
         number: {
             type: String,
-            required: true,
         },
     },
 

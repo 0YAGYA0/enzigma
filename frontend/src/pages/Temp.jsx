@@ -1,65 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Temp = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    gender: "Male",
-    age: "30",
-    dateOfBirth: "15-10-25",
-    address: {
-      street: "123 Main St",
-      city: "New York",
-      zip: "10001",
-      state: "mumbai",
-      country: "India",
-    },
-    emergencyContact: {
-      name: "Jane Doe",
-      phone: "123-456-7890",
-    },
-    relocation: true,
-    education: [
-      {
-        school: "ABC University",
-        qualification: "Bachelors",
-        percentage: "85%",
-        passOutYear: "2020",
+
+  // Initialize formData with default values or data passed via location.state
+  const [formData, setFormData] = useState(
+    location.state?.formData || {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      age: "",
+      dateOfBirth: "",
+      permanentAddress: {
+        street: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        country: "",
       },
-    ],
-    trainings: [
-      {
-        program: "React Training",
-        contents: "React basics",
-        organizedBy: "XYZ Corp",
-        duration: "1 Month",
+      emergencyContact: {
+        name: " ",
+        phone: "",
       },
-    ],
-    certifications: [
-      { srNo: "12345", certification: "React Certified", duration: "6 Months" },
-    ],
-    familyMembers: [
-      { relation: "Brother", occupation: "Engineer", location: "New York" },
-    ],
-  });
+      relocation: true,
+      education: [
+        {
+          school: " ",
+          qualification: "",
+          percentage: "",
+          passOutYear: "",
+        },
+      ],
+      trainings: [
+        {
+          program: "",
+          contents: "",
+          organizedBy: "",
+          duration: "",
+        },
+      ],
+      certifications: [{ srNo: "", certification: "", duration: "" }],
+      familyMembers: [{ relation: "", occupation: "", location: "" }],
+    }
+  );
+
+  useEffect(() => {
+    if (location.state?.formData) {
+      setFormData(location.state.formData);
+    }
+  }, [location.state]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const nameParts = name.split(".");
+
     if (nameParts.length > 1) {
-      // Nested structure (like address or emergencyContact)
+      // Nested structure (like permanentAddress)
       setFormData((prevData) => ({
         ...prevData,
         [nameParts[0]]: {
           ...prevData[nameParts[0]],
-          [nameParts[1]]: value,
+          [nameParts[1]]: value, // Update the specific property inside permanentAddress
         },
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
+        [name]: value, // For flat properties
       }));
     }
   };
@@ -122,9 +132,10 @@ const Temp = () => {
                       First Name
                     </label>
                     <input
-                      name="name.firstName"
+                      name="firstName"
                       type="text"
-                      //
+                      value={formData.firstName} // This binds the value to the state
+                      onChange={handleInputChange} // This calls handleInputChange on input change
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -133,8 +144,10 @@ const Temp = () => {
                       Middle Name
                     </label>
                     <input
-                      name="name.middleName"
+                      name="middleName"
                       type="text"
+                      value={formData.middleName || ""} // Use empty string for undefined values
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -143,9 +156,10 @@ const Temp = () => {
                       Last Name
                     </label>
                     <input
-                      name="name.lastName"
+                      name="lastName"
                       type="text"
-                      //
+                      value={formData.lastName} // Bind value to formData
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -156,6 +170,8 @@ const Temp = () => {
                     <input
                       name="dateOfBirth"
                       type="date"
+                      value={formData.dateOfBirth} // Bind value to formData
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -166,6 +182,8 @@ const Temp = () => {
                     <input
                       name="age"
                       type="number"
+                      value={formData.age} // Bind value to formData
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -175,6 +193,8 @@ const Temp = () => {
                     </label>
                     <select
                       name="gender"
+                      value={formData.gender} // Bind value to formData
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     >
                       <option value="">Select</option>
@@ -199,7 +219,8 @@ const Temp = () => {
                     <input
                       name="permanentAddress.street"
                       type="text"
-                      //
+                      value={formData.permanentAddress.street} // Bind to formData.permanentAddress.street
+                      onChange={handleInputChange} // Use handleInputChange to update state
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -210,7 +231,8 @@ const Temp = () => {
                     <input
                       name="permanentAddress.city"
                       type="text"
-                      //
+                      value={formData.permanentAddress.city} // Bind to formData.permanentAddress.city
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -221,7 +243,8 @@ const Temp = () => {
                     <input
                       name="permanentAddress.state"
                       type="text"
-                      //
+                      value={formData.permanentAddress.state} // Bind to formData.permanentAddress.state
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -232,7 +255,8 @@ const Temp = () => {
                     <input
                       name="permanentAddress.zipCode"
                       type="text"
-                      //
+                      value={formData.permanentAddress.zipCode} // Bind to formData.permanentAddress.zipCode
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -243,7 +267,8 @@ const Temp = () => {
                     <input
                       name="permanentAddress.country"
                       type="text"
-                      //
+                      value={formData.permanentAddress.country} // Bind to formData.permanentAddress.country
+                      onChange={handleInputChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -263,8 +288,8 @@ const Temp = () => {
                     <input
                       name="emergencyContact.name"
                       type="text"
-                      onChange={handleInputChange}
-                      //
+                      value={formData.emergencyContact.name} // Bind to formData.emergencyContact.name
+                      onChange={handleInputChange} // Call handleInputChange to update state
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -275,8 +300,8 @@ const Temp = () => {
                     <input
                       name="emergencyContact.phone"
                       type="tel"
-                      onChange={handleInputChange}
-                      //
+                      value={formData.emergencyContact.phone} // Bind to formData.emergencyContact.phone
+                      onChange={handleInputChange} // Call handleInputChange to update state
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                     />
                   </div>
@@ -290,7 +315,7 @@ const Temp = () => {
                 </legend>
                 <table className="table-auto w-full border-collapse border border-gray-300">
                   <thead>
-                    <tr className="  px-2">
+                    <tr className="px-2">
                       <th className="px-4 py-2 text-sm font-medium border-gray-300 text-gray-700">
                         Degree
                       </th>
@@ -312,6 +337,7 @@ const Temp = () => {
                           <input
                             name="degree"
                             type="text"
+                            value={edu.degree} // Bind to edu.degree
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -322,6 +348,7 @@ const Temp = () => {
                           <input
                             name="institution"
                             type="text"
+                            value={edu.institution} // Bind to edu.institution
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -332,6 +359,7 @@ const Temp = () => {
                           <input
                             name="percentage"
                             type="number"
+                            value={edu.percentage} // Bind to edu.percentage
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -342,6 +370,7 @@ const Temp = () => {
                           <input
                             name="passOutYear"
                             type="text"
+                            value={edu.passOutYear} // Bind to edu.passOutYear
                             onChange={(e) =>
                               handleArrayChange(e, "education", index)
                             }
@@ -369,7 +398,7 @@ const Temp = () => {
                 <table className="table-auto w-full border-collapse border border-gray-300">
                   <thead>
                     <tr className="">
-                      <th className="px-4 py-2 border text-sm font-medium border-gray-300 text-gray-700 ">
+                      <th className="px-4 py-2 border text-sm font-medium border-gray-300 text-gray-700">
                         Training Program
                       </th>
                       <th className="px-4 py-2 border text-sm font-medium text-gray-700 border-gray-300">
@@ -390,9 +419,10 @@ const Temp = () => {
                           <input
                             name="program"
                             type="text"
+                            value={train.program} // Bind to train.program
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
-                            }
+                            } // Update the correct item
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
                         </td>
@@ -400,9 +430,10 @@ const Temp = () => {
                           <input
                             name="contents"
                             type="text"
+                            value={train.contents} // Bind to train.contents
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
-                            }
+                            } // Update the correct item
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
                         </td>
@@ -410,9 +441,10 @@ const Temp = () => {
                           <input
                             name="organizedBy"
                             type="text"
+                            value={train.organizedBy} // Bind to train.organizedBy
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
-                            }
+                            } // Update the correct item
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
                         </td>
@@ -420,9 +452,10 @@ const Temp = () => {
                           <input
                             name="duration"
                             type="text"
+                            value={train.duration} // Bind to train.duration
                             onChange={(e) =>
                               handleArrayChange(e, "trainings", index)
-                            }
+                            } // Update the correct item
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
                         </td>
@@ -432,7 +465,7 @@ const Temp = () => {
                 </table>
                 <button
                   type="button"
-                  onClick={() => handleAddNew("trainings")}
+                  onClick={() => handleAddNew("trainings")} // Add a new training entry
                   className="mt-4 text-blue-500"
                 >
                   Add Training
@@ -446,7 +479,7 @@ const Temp = () => {
                 </legend>
                 <table className="table-auto w-full border-collapse border text-gray-700 border-gray-300">
                   <thead>
-                    <tr className="">
+                    <tr>
                       <th className="px-4 py-2 border text-sm font-medium text-gray-700 border-gray-300">
                         Certification Number
                       </th>
@@ -465,8 +498,10 @@ const Temp = () => {
                           <input
                             name="srNo"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "certifications", index)
+                            value={cert.srNo} // Bind to cert.srNo
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "certifications", index) // Update the corresponding certification
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -475,8 +510,10 @@ const Temp = () => {
                           <input
                             name="certification"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "certifications", index)
+                            value={cert.certification} // Bind to cert.certification
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "certifications", index) // Update the corresponding certification
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -485,8 +522,10 @@ const Temp = () => {
                           <input
                             name="duration"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "certifications", index)
+                            value={cert.duration} // Bind to cert.duration
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "certifications", index) // Update the corresponding certification
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -497,7 +536,7 @@ const Temp = () => {
                 </table>
                 <button
                   type="button"
-                  onClick={() => handleAddNew("certifications")}
+                  onClick={() => handleAddNew("certifications")} // Add a new certification entry
                   className="mt-4 text-blue-500"
                 >
                   Add Certification
@@ -511,7 +550,7 @@ const Temp = () => {
                 </legend>
                 <table className="table-auto w-full border-collapse border border-gray-300">
                   <thead>
-                    <tr className="">
+                    <tr>
                       <th className="px-4 py-2 border text-sm font-medium text-gray-700 border-gray-300">
                         Relation
                       </th>
@@ -530,8 +569,10 @@ const Temp = () => {
                           <input
                             name="relation"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "familyMembers", index)
+                            value={fam.relation} // Bind to the `relation` field
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "familyMembers", index) // Update family member's relation
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -540,8 +581,10 @@ const Temp = () => {
                           <input
                             name="occupation"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "familyMembers", index)
+                            value={fam.occupation} // Bind to the `occupation` field
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "familyMembers", index) // Update family member's occupation
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -550,8 +593,10 @@ const Temp = () => {
                           <input
                             name="location"
                             type="text"
-                            onChange={(e) =>
-                              handleArrayChange(e, "familyMembers", index)
+                            value={fam.location} // Bind to the `location` field
+                            onChange={
+                              (e) =>
+                                handleArrayChange(e, "familyMembers", index) // Update family member's location
                             }
                             className="w-full border border-gray-300 rounded-md p-2"
                           />
@@ -562,7 +607,7 @@ const Temp = () => {
                 </table>
                 <button
                   type="button"
-                  onClick={() => handleAddNew("familyMembers")}
+                  onClick={() => handleAddNew("familyMembers")} // Add a new family member entry
                   className="mt-4 text-blue-500"
                 >
                   Add Family Member

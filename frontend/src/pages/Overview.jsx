@@ -22,14 +22,33 @@ const Overview = () => {
   }
 
   const handleEdit = () => {
-    navigate.goBack(); // Redirects back to the form
+    navigate(-1, { state: { formData } }); // Navigate back with form data
   };
 
-  const handleSubmit = () => {
-    // Implement your final submission logic here
-    console.log("Final submission:", formData);
-    navigate("/confirm");
-    // Redirect or show a success message after submission
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1//detail/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Detail created successfully:", result);
+        navigate("/confirm");
+      } else {
+        throw new Error("Error creating detail");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const renderTable = (data, headers) => (

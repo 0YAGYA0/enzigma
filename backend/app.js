@@ -17,8 +17,12 @@ app.use(cookieParser())
 
 
 import userRouter from "./routes/userRoute.js"
+import tokenRouter from "./routes/tokenRoute.js"
+import detailRouter from "./routes/detailRoute.js"
 
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/token", tokenRouter)
+app.use("/api/v1/detail", detailRouter)
 
 app.use((err, req, res, next) => {
     if (err instanceof apiError) {
